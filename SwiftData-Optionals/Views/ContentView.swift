@@ -12,7 +12,8 @@ struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \Item.name) var items: [Item]
     @State private var showSheetAddItem = false
-    @State private var showSheetEditItem = false
+//    @State private var showSheetEditItem = false
+    @State private var editingItem: Item?
     
     var body: some View {
         NavigationStack {
@@ -22,7 +23,8 @@ struct ContentView: View {
                     Text(item.name ?? "")
                         .contextMenu {
                             Button("Edit", systemImage: "pencil", action: {
-                                showSheetEditItem = true
+//                                showSheetEditItem = true
+                                editingItem = item
                             })
                             
                             // Delete
@@ -32,7 +34,9 @@ struct ContentView: View {
                                 Label("Delete", systemImage: "trash")
                             }
                         } //contextMenu
-                        .sheet(isPresented: $showSheetEditItem) {
+//                        .sheet(isPresented: $showSheetEditItem) {
+//                            EditItemView(item: item)
+                        .sheet(item: $editingItem) { item in
                             EditItemView(item: item)
 #if os(macOS)
                                 .frame(height: 150)
